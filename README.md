@@ -2,6 +2,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+Antes de iniciar o projeto, execute o seguinte comando no terminal:
+
+### `export NODE_OPTIONS=--openssl-legacy-provider`
+
 In the project directory, you can run:
 
 ### `npm start`

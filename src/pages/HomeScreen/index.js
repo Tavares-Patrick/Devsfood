@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { Container, CategoryArea, CategoryList } from './styled';
+import ReactTooltip from 'react-tooltip';
 
 import api from '../../api';
 
@@ -23,6 +24,7 @@ export default () => {
             } else {
                 console.error('Erro ao buscar categorias:', cat?.error);
             }
+            ReactTooltip.rebuild();
         };
 
         getCategories();
@@ -41,7 +43,7 @@ export default () => {
                     Selecione uma categoria
                     <CategoryList>
                         <CategoryItem
-                            data={{ id: 0, title: 'Todas as categorias', image: '/assets/food-and-restaurant.png' }}
+                            data={{ id: 0, name: 'Todas as categorias', image: '/assets/food-and-restaurant.png' }}
                             activeCategory={activeCategory}
                             onClick={() => setActiveCategory(0)}
                         />
