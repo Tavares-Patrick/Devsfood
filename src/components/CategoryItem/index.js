@@ -8,7 +8,8 @@ const CategoryItem = ({ data, activeCategory, onClick, setActiveCategory }) => {
         <Container 
             isActive={isActive} 
             onClick={onClick}
-            
+            data-tip={data.name}
+            data-for="tip-top"
             >
             <CategoryImage src={data.image} alt={data.title} />
         </Container>
