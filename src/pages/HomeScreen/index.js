@@ -16,7 +16,9 @@ import api from '../../api';
 import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
+import Modal from '../../components/Modal';
 
+let searchTimer = null;
 
 export default () => {
     const history = useHistory();
@@ -25,21 +27,31 @@ export default () => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    const [activeCategory, setActiveCategory] = useState(0);
-    const [activePage, setActivePage] = useState(0);
+    const [modalStatus, setModalStatus] = useState(true);
 
-    const getProducts = async () => {
-        const prods = await api.getProducts();
-        if(prods.error === '') {
-            setProducts(prods.result.data);
-            setTotalPages(prods.result.pages);
-            setActivePage(prods.result.page);
-        }
+    const [activeCategory, setActiveCategory] = useState(0);
+    const [activePage, setActivePage] = useState(1);
+    const [activeSearch, setActiveSearch] = useState('');
+
+    const getProducts = async (activeCategory, activePage, activeSearch) => {
+    const prods = await api.getProducts(activeCategory, activePage, activeSearch); // ✅ passe os parâmetros corretamente
+    if (prods.error === '') {
+        setProducts(prods.result.data);
+        setTotalPages(prods.result.pages);
+        setActivePage(prods.result.page);
     }
+};
+
+    useEffect(()=> {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(()=>{
+            setActiveSearch(headerSearch);
+        }, 2000);
+    }, [headerSearch]);
 
     useEffect(() => {
         const getCategories = async () => {
-            const cat = await api.getCategories(); // ⬅️ Aqui faltava o await
+            const cat = await api.getCategories();
             if (cat && cat.error === '') {
                 setCategories(cat.result);
             } else {
@@ -51,10 +63,10 @@ export default () => {
         getCategories();
     }, []);
 
-    useEffect(()=>{
-        setProducts([]);
-        getProducts();
-    },[activeCategory, activePage]);
+    useEffect(() => {
+    setProducts([]);
+    getProducts(activeCategory, activePage, activeSearch);
+}, [activeCategory, activePage, activeSearch]);
 
     return (
         <Container>
@@ -109,6 +121,10 @@ export default () => {
                     ))}
                 </ProductPaginationArea>
             }
+
+            <Modal status={modalStatus} setStatus={setModalStatus}>
+                Conteúdo do Modal
+            </Modal>
         </Container>
     );
 }
