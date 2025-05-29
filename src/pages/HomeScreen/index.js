@@ -17,6 +17,7 @@ import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
 import Modal from '../../components/Modal';
+import ModalProduct from '../../components/ModalProduct';
 
 let searchTimer = null;
 
@@ -27,7 +28,8 @@ export default () => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    const [modalStatus, setModalStatus] = useState(true);
+    const [modalStatus, setModalStatus] = useState(false);
+    const [modalData, setModalData] = useState({});
 
     const [activeCategory, setActiveCategory] = useState(0);
     const [activePage, setActivePage] = useState(1);
@@ -62,6 +64,11 @@ export default () => {
 
         getCategories();
     }, []);
+
+    const handleProductClick = (data) => {
+        setModalData(data);
+        setModalStatus(true);
+    }
 
     useEffect(() => {
     setProducts([]);
@@ -101,6 +108,7 @@ export default () => {
                             <ProductItem
                             key={index}
                             data={item}
+                            onClick={handleProductClick}
                             />
                         ))}
                     </ProductList>
@@ -123,7 +131,7 @@ export default () => {
             }
 
             <Modal status={modalStatus} setStatus={setModalStatus}>
-                Conteúdo do Modal
+                <ModalProduct data={modalData}/>
             </Modal>
         </Container>
     );
