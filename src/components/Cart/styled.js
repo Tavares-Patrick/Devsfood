@@ -135,5 +135,9 @@ export const SummaryValue = styled.div`
     font-size: 13px;
 `;
 
+export const WarningMessage = styled.span`
+    color: #FFF;
+    font-size: 14px;
+`;
 
 

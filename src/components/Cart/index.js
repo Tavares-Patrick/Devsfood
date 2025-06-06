@@ -22,7 +22,8 @@ import {
     SummaryArea,
     SummaryRow,
     SummaryLabel,
-    SummaryValue
+    SummaryValue,
+    WarningMessage
 } from './styled';
 
 export default () => {
@@ -31,9 +32,10 @@ export default () => {
 
     const [show, setShow] = useState(false);
     const [address, setAddress] = useState({
-        place: "Ex minha casa",
-        street: "Rua Exemplo, 123",
-        cityState: "Cidade, Estado"
+        cep: "",
+        street: "",
+        place: "",
+        cityState: ""
     });
     const [discountCode, setDiscountCode] = useState("");
     const [discountValue, setDiscountValue] = useState(0);
@@ -51,7 +53,7 @@ export default () => {
     }
 
     const productsTotal = products.reduce((sum, item) => sum + item.price * item.qt, 0);
-    const total = productsTotal + deliveryFee - discountValue;
+    const total = productsTotal + (address.cep ? deliveryFee : 0) - discountValue;
 
     const applyDiscount = () => {
         if (discountCode.trim().toUpperCase() === 'PROMO10') {
@@ -118,15 +120,26 @@ export default () => {
                         <SummaryLabel>Desconto</SummaryLabel>
                         <SummaryValue>R$ {discountValue.toFixed(2)}</SummaryValue>
                     </SummaryRow>
-                    <SummaryRow>
-                        <SummaryLabel>Taxa de entrega</SummaryLabel>
-                        <SummaryValue>R$ {deliveryFee.toFixed(2)}</SummaryValue>
-                    </SummaryRow>
+
+                    {address.cep ? (
+                        <SummaryRow>
+                            <SummaryLabel>Taxa de entrega</SummaryLabel>
+                            <SummaryValue>R$ {deliveryFee.toFixed(2)}</SummaryValue>
+                        </SummaryRow>
+                    ) : (
+                        <SummaryRow>
+                            <WarningMessage>
+                                Informe o CEP para calcular a entrega
+                            </WarningMessage>
+                        </SummaryRow>
+                    )}
+
                     <SummaryRow>
                         <SummaryLabel><strong>Total</strong></SummaryLabel>
                         <SummaryValue><strong>R$ {total.toFixed(2)}</strong></SummaryValue>
                     </SummaryRow>
                 </SummaryArea>
+
             </CartBody>
         </CartArea>
     );

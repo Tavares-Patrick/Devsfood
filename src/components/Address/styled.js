@@ -34,7 +34,7 @@ export const Input = styled.input`
   box-sizing: border-box;
   border-radius: 8px;
   border: none;
-  font-size: 13px;
+  font-size: 14px;
 `;
 
 export const SaveButton = styled.button`
@@ -50,4 +50,9 @@ export const SaveButton = styled.button`
   &:hover {
     background-color: #0a3a0a;
   }
+`;
+
+export const WarningMessage = styled.span`
+    color: #FFF;
+    font-size: 14px;
 `;
